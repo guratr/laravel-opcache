@@ -15,6 +15,7 @@ trait CreatesRequest
     public function sendRequest($url, $parameters = [])
     {
         return Http::withHeaders(config('opcache.headers'))
+            ->timeout(config('opcache.timeout', 30))
             ->withOptions(['verify' => config('opcache.verify')])
             ->get(rtrim(config('opcache.url'), '/').'/'.trim(config('opcache.prefix'), '/').'/'.ltrim($url, '/'),
                 array_merge(['key' => Crypt::encrypt('opcache')], $parameters)
